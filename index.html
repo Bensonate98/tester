@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Essence Trading Platform Dashboard</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="styles.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Fixed Sidebar for Desktop -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-content">
+            <!-- Account Balance Section -->
+            <div class="account-balance d-none d-lg-block">
+                <div class="balance-header">
+                    <h6 class="mb-0">Account Balance</h6>
+                    <span class="badge wallet-badge">WALLET</span>
+                </div>
+                <div class="balance-item">
+                    <i class="fas fa-wallet me-3"></i>
+                    <span class="balance-label">Main Wallet</span>
+                    <span class="balance-amount ms-auto">$0.00</span>
+                </div>
+                <div class="balance-item">
+                    <i class="fas fa-piggy-bank me-3"></i>
+                    <span class="balance-label">Profit Wallet</span>
+                    <span class="balance-amount ms-auto">$8.00</span>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="sidebar-actions d-none d-lg-block">
+                <div class="row g-2">
+                    <div class="col-6">
+                        <button class="btn action-btn deposit-btn w-100">
+                            <i class="fas fa-download me-2"></i>
+                            Deposit
+                        </button>
+                    </div>
+                    <div class="col-6">
+                        <button class="btn action-btn invest-btn w-100">
+                            <i class="fas fa-chart-line me-2"></i>
+                            Invest Now
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Navigation Menu -->
+            <nav class="sidebar-nav">
+                <div class="nav-item active" data-page="dashboard">
+                    <i class="fas fa-th-large me-3"></i>
+                    <span>DASHBOARD</span>
+                </div>
+                <div class="nav-item" data-page="schema">
+                    <i class="fas fa-eye me-3"></i>
+                    <span>ALL SCHEMA</span>
+                </div>
+                <div class="nav-item" data-page="schema-logs">
+                    <i class="fas fa-file-alt me-3"></i>
+                    <span>SCHEMA LOGS</span>
+                </div>
+                <div class="nav-item" data-page="transactions">
+                    <i class="fas fa-exchange-alt me-3"></i>
+                    <span>ALL TRANSACTIONS</span>
+                </div>
+                <div class="nav-item" data-page="add-money">
+                    <i class="fas fa-plus-circle me-3"></i>
+                    <span>ADD MONEY</span>
+                </div>
+                <div class="nav-item" data-page="add-money-log">
+                    <i class="fas fa-list me-3"></i>
+                    <span>ADD MONEY LOG</span>
+                </div>
+            </nav>
+        </div>
+    </div>
+
+    <!-- Mobile Offcanvas Sidebar -->
+    <div class="offcanvas offcanvas-start d-lg-none" tabindex="-1" id="mobileSidebar" aria-labelledby="mobileSidebarLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title text-white" id="mobileSidebarLabel">Menu</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body p-0">
+            <div class="sidebar-content">
+                <!-- Navigation Menu for Mobile -->
+                <nav class="sidebar-nav">
+                    <div class="nav-item active" data-page="dashboard">
+                        <i class="fas fa-th-large me-3"></i>
+                        <span>DASHBOARD</span>
+                    </div>
+                    <div class="nav-item" data-page="schema">
+                        <i class="fas fa-eye me-3"></i>
+                        <span>ALL SCHEMA</span>
+                    </div>
+                    <div class="nav-item" data-page="schema-logs">
+                        <i class="fas fa-file-alt me-3"></i>
+                        <span>SCHEMA LOGS</span>
+                    </div>
+                    <div class="nav-item" data-page="transactions">
+                        <i class="fas fa-exchange-alt me-3"></i>
+                        <span>ALL TRANSACTIONS</span>
+                    </div>
+                    <div class="nav-item" data-page="add-money">
+                        <i class="fas fa-plus-circle me-3"></i>
+                        <span>ADD MONEY</span>
+                    </div>
+                    <div class="nav-item" data-page="add-money-log">
+                        <i class="fas fa-list me-3"></i>
+                        <span>ADD MONEY LOG</span>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sidebar Overlay for Mobile -->
+    <div class="sidebar-overlay d-lg-none" id="sidebarOverlay"></div>
+
+    <!-- Main Content -->
+    <div class="main-wrapper" id="mainWrapper">
+        <!-- Header -->
+        <header class="navbar navbar-expand-lg custom-header sticky-top">
+    <div class="container-fluid">
+        <!-- Mobile Layout -->
+        <div class="d-flex d-lg-none w-100 justify-content-between align-items-center">
+            <!-- Left: Brand Logo -->
+            <div class="d-flex align-items-center">
+                <div class="navbar-brand text-white mb-0 d-flex align-items-center">
+                    <i class="fas fa-chart-line me-2 text-info"></i>
+                    <span class="brand-text">essence</span>
+                </div>
+            </div>
+            
+            <!-- Center: Controls -->
+            <div class="d-flex align-items-center mobile-controls">
+                <button class="btn btn-link text-white me-2 theme-toggle" id="themeToggle" title="Toggle theme">
+                    <i class="fas fa-sun"></i>
+                </button>
+                
+                <!-- Notifications Dropdown -->
+                <div class="dropdown me-2">
+                    <button class="btn btn-link text-white position-relative" type="button" data-bs-toggle="dropdown" aria-expanded="false" id="notificationBtn">
+                        <i class="fas fa-bell"></i>
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger notification-badge">
+                            1
+                        </span>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end notification-dropdown">
+                        <li class="dropdown-header d-flex justify-content-between align-items-center">
+                            <span>Notifications</span>
+                            <span class="badge bg-danger rounded-pill">0</span>
+                        </li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li class="dropdown-item-text text-center text-muted py-3">
+                            Notification Not Found
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="dropdown me-2">
+                    <button class="btn language-btn-mobile dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        English
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#">English</a></li>
+                        <li><a class="dropdown-item" href="#">Spanish</a></li>
+                        <li><a class="dropdown-item" href="#">French</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Right: User Avatar Dropdown -->
+            <div class="dropdown">
+                <button class="btn p-0" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <div class="user-avatar">
+                        <div class="avatar-circle">R</div>
+                    </div>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end user-dropdown">
+                    <li>
+                        <a class="dropdown-item" href="#">
+                            <i class="fas fa-cog me-2"></i>
+                            SETTINGS
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" href="#">
+                            <i class="fas fa-key me-2"></i>
+                            CHANGE PASSWORD
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" href="#">
+                            <i class="fas fa-ticket-alt me-2"></i>
+                            SUPPORT TICKETS
+                        </a>
+                    </li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li>
+                        <a class="dropdown-item text-danger" href="#">
+                            <i class="fas fa-sign-out-alt me-2"></i>
+                            LOGOUT
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Desktop Layout -->
+        <div class="d-none d-lg-flex w-100 justify-content-between align-items-center">
+            <div class="d-flex align-items-center">
+                <button class="btn btn-link text-white me-2 back-btn">
+                    <i class="fas fa-arrow-left"></i>
+                </button>
+                <div class="navbar-brand text-white mb-0">
+                    <i class="fas fa-chart-line me-2 text-info"></i>
+                    ESSENCE TRADES
+                </div>
+            </div>
+            
+            <div class="d-flex align-items-center">
+                <button class="btn btn-link text-white me-2 theme-toggle-desktop" id="themeToggleDesktop" title="Toggle theme">
+                    <i class="fas fa-sun"></i>
+                </button>
+                
+                <!-- Desktop Notifications Dropdown -->
+                <div class="dropdown me-2">
+                    <button class="btn btn-link text-white position-relative" type="button" data-bs-toggle="dropdown" aria-expanded="false" id="notificationBtnDesktop">
+                        <i class="fas fa-bell"></i>
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger notification-badge">
+                            1
+                        </span>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end notification-dropdown">
+                        <li class="dropdown-header d-flex justify-content-between align-items-center">
+                            <span>Notifications</span>
+                            <span class="badge bg-danger rounded-pill">0</span>
+                        </li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li class="dropdown-item-text text-center text-muted py-3">
+                            Notification Not Found
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="dropdown me-2">
+                    <button class="btn language-btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        English
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#">English</a></li>
+                        <li><a class="dropdown-item" href="#">Spanish</a></li>
+                        <li><a class="dropdown-item" href="#">French</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Desktop User Avatar Dropdown -->
+                <div class="dropdown">
+                    <button class="btn p-0" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <div class="user-avatar">
+                            <div class="avatar-circle">A</div>
+                        </div>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end user-dropdown">
+                        <li>
+                            <a class="dropdown-item" href="#">
+                                <i class="fas fa-cog me-2"></i>
+                                SETTINGS
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="#">
+                                <i class="fas fa-key me-2"></i>
+                                CHANGE PASSWORD
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="#">
+                                <i class="fas fa-ticket-alt me-2"></i>
+                                SUPPORT TICKETS
+                            </a>
+                        </li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li>
+                            <a class="dropdown-item text-danger" href="#">
+                                <i class="fas fa-sign-out-alt me-2"></i>
+                                LOGOUT
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Toggle (Hidden, using offcanvas trigger) -->
+        <button class="btn btn-link text-white d-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileSidebar" aria-controls="mobileSidebar" id="sidebarToggle">
+            <i class="fas fa-bars"></i>
+        </button>
+    </div>
+</header>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- Mobile-Only Sections -->
+            <div class="mobile-sections d-lg-none">
+                <!-- Verification Notice -->
+                <div class="alert verification-notice" role="alert">
+                    <i class="fas fa-shield-alt me-2"></i>
+                    <span>Please Verify Your Identity</span>
+                    <a href="#" class="ms-auto text-decoration-underline">Submit Now</a>
+                </div>
+
+                <!-- User Profile Card -->
+                <div class="card user-profile-card mb-3">
+                    <div class="card-body d-flex justify-content-between align-items-center">
+                        <div class="d-flex align-items-center">
+                            <div class="profile-avatar me-3">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <div class="profile-details">
+                                <h6 class="mb-1">Hi, Eweh Ewa</h6>
+                                <small class="text-white-50">Essence Trading Platform Member - Level 1</small>
+                            </div>
+                        </div>
+                        <div class="level-badge-mobile">
+                            <i class="fas fa-medal"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Wallet Balance Card -->
+                <div class="card wallet-balance-card mb-3">
+                    <div class="card-body">
+                        <h6 class="card-title mb-4">All Wallets in Dollars</h6>
+                        <div class="wallet-items">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <span class="wallet-label">Main Wallet</span>
+                                <span class="wallet-amount">$0.00</span>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <span class="wallet-label">Profit Wallet</span>
+                                <span class="wallet-amount">$8.00</span>
+                            </div>
+                        </div>
+                        <div class="earnings-info">
+                            <i class="fas fa-info-circle me-2"></i>
+                            <small>You Earned 8 Dollars This Week</small>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mobile Action Buttons -->
+                <div class="row g-2 mb-4">
+                    <div class="col-4">
+                        <button class="btn mobile-action-btn deposit-mobile w-100">
+                            <i class="fas fa-download d-block mb-1"></i>
+                            <small>Deposit</small>
+                        </button>
+                    </div>
+                    <div class="col-4">
+                        <button class="btn mobile-action-btn investment-mobile w-100">
+                            <i class="fas fa-cube d-block mb-1"></i>
+                            <small>Investment</small>
+                        </button>
+                    </div>
+                    <div class="col-4">
+                        <button class="btn mobile-action-btn withdraw-mobile w-100">
+                            <i class="fas fa-paper-plane d-block mb-1"></i>
+                            <small>Withdraw</small>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- All Navigations -->
+                <div class="all-navigations mb-4">
+                    <h6 class="mobile-section-title">ALL NAVIGATIONS</h6>
+                    <div class="row g-2 mb-3">
+                        <div class="col-4">
+                            <div class="card nav-card text-center">
+                                <div class="card-body p-3">
+                                    <div class="nav-icon schemas mx-auto mb-2">
+                                        <i class="fas fa-eye"></i>
+                                    </div>
+                                    <small>Schemas</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="card nav-card text-center">
+                                <div class="card-body p-3">
+                                    <div class="nav-icon investment mx-auto mb-2">
+                                        <i class="fas fa-file-alt"></i>
+                                    </div>
+                                    <small>Investment</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="card nav-card text-center">
+                                <div class="card-body p-3">
+                                    <div class="nav-icon transactions mx-auto mb-2">
+                                        <i class="fas fa-file-alt"></i>
+                                    </div>
+                                    <small>Transactions</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="card nav-card text-center">
+                                <div class="card-body p-3">
+                                    <div class="nav-icon deposit mx-auto mb-2">
+                                        <i class="fas fa-dollar-sign"></i>
+                                    </div>
+                                    <small>Deposit</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="card nav-card text-center">
+                                <div class="card-body p-3">
+                                    <div class="nav-icon deposit-log mx-auto mb-2">
+                                        <i class="fas fa-file-alt"></i>
+                                    </div>
+                                    <small>Deposit Log</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="card nav-card text-center">
+                                <div class="card-body p-3">
+                                    <div class="nav-icon wallet-exch mx-auto mb-2">
+                                        <i class="fas fa-exchange-alt"></i>
+                                    </div>
+                                    <small>Wallet Exch.</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-center mt-4">
+                      <button class="btn load-more-btn w-50">LOAD MORE</button>
+                    </div>
+
+                </div>
+
+                <!-- All Statistics -->
+                <div class="all-statistics mb-4">
+                    <h6 class="mobile-section-title">ALL STATISTIC</h6>
+                    <div class="statistics-cards mb-3">
+                        <div class="card stat-card-mobile green mb-2">
+                            <div class="card-body d-flex align-items-center">
+                                <div class="stat-icon-mobile me-3">
+                                    <i class="fas fa-exchange-alt"></i>
+                                </div>
+                                <div class="stat-content-mobile">
+                                    <div class="stat-number">1</div>
+                                    <small class="stat-label">All Transactions</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card stat-card-mobile yellow mb-2">
+                            <div class="card-body d-flex align-items-center">
+                                <div class="stat-icon-mobile me-3">
+                                    <i class="fas fa-download"></i>
+                                </div>
+                                <div class="stat-content-mobile">
+                                    <div class="stat-number">$0</div>
+                                    <small class="stat-label">Total Deposit</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card stat-card-mobile purple mb-2">
+                            <div class="card-body d-flex align-items-center">
+                                <div class="stat-icon-mobile me-3">
+                                    <i class="fas fa-cube"></i>
+                                </div>
+                                <div class="stat-content-mobile">
+                                    <div class="stat-number">$0</div>
+                                    <small class="stat-label">Total Investment</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="btn load-more-btn w-100">LOAD MORE</button>
+                </div>
+
+                <!-- Recent Transactions -->
+                <div class="recent-transactions-mobile mb-4">
+                    <h6 class="mobile-section-title">RECENT TRANSACTIONS</h6>
+                    <div class="card transaction-card-mobile">
+                        <div class="card-body d-flex justify-content-between">
+                            <div class="transaction-left">
+                                <div class="transaction-title fw-bold">Signup Bonus</div>
+                                <div class="transaction-id text-warning">TRXTO91QQ14GH</div>
+                                <small class="transaction-date text-muted">Jun 26 2025 10:57</small>
+                            </div>
+                            <div class="transaction-right text-end">
+                                <div class="transaction-amount fw-bold">8 Dollars</div>
+                                <small class="transaction-fee text-muted">+0 Dollars Fee</small>
+                                <small class="transaction-status text-muted d-block">SYSTEM</small>
+                                <small class="transaction-success text-success fw-bold">Success</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Referral URL -->
+                <div class="referral-url-mobile mb-5">
+                    <h6 class="mobile-section-title">REFERRAL URL</h6>
+                    <div class="input-group mb-2">
+                        <input type="text" class="form-control referral-input-mobile" value="https://dashboard.essencetdplatform.com/register" readonly>
+                        <button class="btn copy-btn-mobile" type="button">COPY</button>
+                    </div>
+                    <small class="text-muted">0 peoples are joined by using this URL</small>
+                </div>
+
+                <!-- Bottom Navigation -->
+                <div class="bottom-navigation d-lg-none">
+                    <div class="d-flex justify-content-around align-items-center">
+                        <div class="bottom-nav-item active">
+                            <i class="fas fa-th-large"></i>
+                        </div>
+                        <div class="bottom-nav-item">
+                            <i class="fas fa-download"></i>
+                        </div>
+                        <div class="bottom-nav-item">
+                            <i class="fas fa-cube"></i>
+                        </div>
+                        <div class="bottom-nav-item">
+                            <i class="fas fa-gift"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Desktop Content Views -->
+            <div class="desktop-content d-none d-lg-block">
+                <!-- Dashboard View -->
+                <div class="content-view active" id="dashboardView">
+                  <!-- Profile/Referral View -->
+                
+                    <div class="row">
+                      <!-- Level Badge -->
+                    <div class="level-section text-center mb-4 col-6">
+                        <div class="level-badge mx-auto">
+                            <div class="level-icon">
+                                <i class="fas fa-medal"></i>
+                            </div>
+                            <div class="level-info">
+                                <div class="level-title">Level 1</div>
+                                <div class="level-subtitle">Essence Trading Platform Member</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Referral URL -->
+                    <div class="referral-section mb-4 col-6 py-5 px-3">
+                        <h5 class="section-title">Referral URL</h5>
+                        <div class="input-group mb-2">
+                            <input type="text" class="form-control referral-input" value="https://dashboard.essencetdplatform.com/register?inv" readonly>
+                            <button class="btn copy-btn" type="button">
+                                <i class="fas fa-copy me-2"></i>
+                                Copy
+                            </button>
+                        </div>
+                        <small class="text-muted">0 peoples are joined by using this URL</small>
+                    </div>
+                    </div>
+            
+                    <!-- Stats Cards -->
+                    <div class="row g-3 mb-2">
+                        <div class="col-xl-3 col-lg-6">
+                            <div class="card stat-card">
+                                <div class="card-body d-flex align-items-center">
+                                    <div class="stat-icon investment-icon me-3">
+                                        <i class="fas fa-chart-bar"></i>
+                                    </div>
+                                    <div class="stat-content">
+                                        <div class="stat-amount">$0</div>
+                                        <div class="stat-label">Investment Bonus</div>
+                                    </div>
+                                    <div class="stat-decoration"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-lg-6">
+                            <div class="card stat-card">
+                                <div class="card-body d-flex align-items-center">
+                                    <div class="stat-icon referral-icon me-3">
+                                        <i class="fas fa-users"></i>
+                                    </div>
+                                    <div class="stat-content">
+                                        <div class="stat-amount">0</div>
+                                        <div class="stat-label">Total Referral</div>
+                                    </div>
+                                    <div class="stat-decoration"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-lg-6">
+                            <div class="card stat-card">
+                                <div class="card-body d-flex align-items-center">
+                                    <div class="stat-icon rank-icon me-3">
+                                        <i class="fas fa-trophy"></i>
+                                    </div>
+                                    <div class="stat-content">
+                                        <div class="stat-amount">1</div>
+                                        <div class="stat-label">Rank Achieved</div>
+                                    </div>
+                                    <div class="stat-decoration"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-lg-6">
+                            <div class="card stat-card">
+                                <div class="card-body d-flex align-items-center">
+                                    <div class="stat-icon ticket-icon me-3">
+                                        <i class="fas fa-question-circle"></i>
+                                    </div>
+                                    <div class="stat-content">
+                                        <div class="stat-amount">0</div>
+                                        <div class="stat-label">Total Ticket</div>
+                                    </div>
+                                    <div class="stat-decoration"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Extended Stats Grid -->
+                    <div class="row g-3 mb-5">
+                        <div class="col-xl-3 col-lg-4 col-md-6">
+                            <div class="card stat-card">
+                                <div class="card-body d-flex align-items-center">
+                                    <div class="stat-icon me-3">
+                                        <i class="fas fa-list"></i>
+                                    </div>
+                                    <div class="stat-content">
+                                        <div class="stat-amount">1</div>
+                                        <div class="stat-label">All Transactions</div>
+                                    </div>
+                                    <div class="stat-decoration"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-lg-4 col-md-6">
+                            <div class="card stat-card">
+                                <div class="card-body d-flex align-items-center">
+                                    <div class="stat-icon me-3">
+                                        <i class="fas fa-download"></i>
+                                    </div>
+                                    <div class="stat-content">
+                                        <div class="stat-amount">$0</div>
+                                        <div class="stat-label">Total Deposit</div>
+                                    </div>
+                                    <div class="stat-decoration"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-lg-4 col-md-6">
+                            <div class="card stat-card">
+                                <div class="card-body d-flex align-items-center">
+                                    <div class="stat-icon me-3">
+                                        <i class="fas fa-chart-line"></i>
+                                    </div>
+                                    <div class="stat-content">
+                                        <div class="stat-amount">$0</div>
+                                        <div class="stat-label">Total Investment</div>
+                                    </div>
+                                    <div class="stat-decoration"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-lg-4 col-md-6">
+                            <div class="card stat-card">
+                                <div class="card-body d-flex align-items-center">
+                                    <div class="stat-icon me-3">
+                                        <i class="fas fa-coins"></i>
+                                    </div>
+                                    <div class="stat-content">
+                                        <div class="stat-amount">$8</div>
+                                        <div class="stat-label">Total Profit</div>
+                                    </div>
+                                    <div class="stat-decoration"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-lg-4 col-md-6">
+                            <div class="card stat-card">
+                                <div class="card-body d-flex align-items-center">
+                                    <div class="stat-icon me-3">
+                                        <i class="fas fa-exchange-alt"></i>
+                                    </div>
+                                    <div class="stat-content">
+                                        <div class="stat-amount">$0</div>
+                                        <div class="stat-label">Total Transfer</div>
+                                    </div>
+                                    <div class="stat-decoration"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-lg-4 col-md-6">
+                            <div class="card stat-card">
+                                <div class="card-body d-flex align-items-center">
+                                    <div class="stat-icon me-3">
+                                        <i class="fas fa-upload"></i>
+                                    </div>
+                                    <div class="stat-content">
+                                        <div class="stat-amount">$0</div>
+                                        <div class="stat-label">Total Withdraw</div>
+                                    </div>
+                                    <div class="stat-decoration"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-lg-4 col-md-6">
+                            <div class="card stat-card">
+                                <div class="card-body d-flex align-items-center">
+                                    <div class="stat-icon me-3">
+                                        <i class="fas fa-gift"></i>
+                                    </div>
+                                    <div class="stat-content">
+                                        <div class="stat-amount">$0</div>
+                                        <div class="stat-label">Referral Bonus</div>
+                                    </div>
+                                    <div class="stat-decoration"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-lg-4 col-md-6">
+                            <div class="card stat-card">
+                                <div class="card-body d-flex align-items-center">
+                                    <div class="stat-icon me-3">
+                                        <i class="fas fa-wallet"></i>
+                                    </div>
+                                    <div class="stat-content">
+                                        <div class="stat-amount">$0</div>
+                                        <div class="stat-label">Deposit</div>
+                                    </div>
+                                    <div class="stat-decoration"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Recent Transactions -->
+                    <div class="transactions-section">
+                        <h5 class="section-title mb-3">Recent Transactions</h5>
+                        <div class="card transactions-table">
+                            <div class="table-responsive">
+                                <table class="table table-dark mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th>DESCRIPTION</th>
+                                            <th>TRANSACTION ID</th>
+                                            <th>TYPE</th>
+                                            <th>AMOUNT</th>
+                                            <th>FEE</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <div class="d-flex align-items-center">
+                                                    <div class="transaction-icon me-3">
+                                                        <i class="fas fa-gift"></i>
+                                                    </div>
+                                                    <div>
+                                                        <div class="transaction-title fw-bold">Signup Bonus</div>
+                                                        <small class="transaction-date text-muted">Jun 26 2025 10:57</small>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>TRXTO91QQ14GH</td>
+                                            <td>
+                                                <span class="badge type-badge signup">Signup Bonus</span>
+                                            </td>
+                                            <td>8 Dollars</td>
+                                            <td>0 Dollars</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="script.js"></script>
+</body>
+</html>
