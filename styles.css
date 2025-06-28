@@ -626,7 +626,7 @@ body {
 
 /* Wallet Balance Card */
 .wallet-balance-card {
-  background: var(--bg-balance);
+  background:  #021c26;
   border: none;
   color: white;
   position: relative;
@@ -678,15 +678,15 @@ body {
 }
 
 .deposit-mobile {
-  background: linear-gradient(135deg, #7bed9f, #70a1ff);
+  background: #021c26
 }
 
 .investment-mobile {
-  background: linear-gradient(135deg, #a29bfe, #6c5ce7);
+  background: #021c26
 }
 
 .withdraw-mobile {
-  background: linear-gradient(135deg, #ff9ff3, #f368e0);
+  background: #021c26
 }
 
 /* Mobile Section Titles */
@@ -700,7 +700,7 @@ body {
 
 /* Navigation Cards */
 .nav-card {
-  background: var(--bg-secondary);
+  background: #021c26;
   border: 1px solid var(--border-color);
   cursor: pointer;
   transition: all 0.3s ease;
@@ -769,15 +769,15 @@ body {
 }
 
 .stat-card-mobile.green {
-  background: linear-gradient(135deg, #7bed9f, #70a1ff);
+  background: #021c26
 }
 
 .stat-card-mobile.yellow {
-  background: linear-gradient(135deg, #feca57, #ff9ff3);
+  background: #021c26
 }
 
 .stat-card-mobile.purple {
-  background: linear-gradient(135deg, #a29bfe, #6c5ce7);
+  background: #021c26
 }
 
 .stat-card-mobile .card-body {
@@ -843,7 +843,7 @@ body {
   bottom: 0;
   left: 0;
   right: 0;
-  background: var(--bg-bottom-nav);
+  background: #021c26;
   padding: 1rem;
   z-index: 1000;
   border-top: 1px solid var(--border-color);
